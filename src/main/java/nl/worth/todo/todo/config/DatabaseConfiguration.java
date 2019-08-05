@@ -1,5 +1,6 @@
 package nl.worth.todo.todo.config;
 
+        import liquibase.integration.spring.SpringLiquibase;
         import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
         import org.springframework.boot.context.properties.ConfigurationProperties;
         import org.springframework.context.annotation.Bean;
@@ -18,5 +19,13 @@ public class DatabaseConfiguration {
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dbDataSource() {
         return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:liquibase/master.xml");
+        liquibase.setDataSource(dbDataSource());
+        return liquibase;
     }
 }

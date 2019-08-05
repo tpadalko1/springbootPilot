@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/demodb;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:file:./target/h2db/db/demodb;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
     username: user
     password:
   h2:

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <changeSet id="create_database" author="tpadalko">
+
+        <createTable tableName="USERS">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="login" type="VARCHAR(255)"/>
+            <column name="role" type="VARCHAR(128)"/>
+            <column name="creation_date" type="datetime" />
+        </createTable>
+
+        <createTable tableName="TODOS">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(128)"/>
+            <column name="creator_id" type="BIGINT">
+                <constraints foreignKeyName="creator_id" referencedTableName="USERS"/>
+            </column>
+            <column name="creation_date" type="datetime" />
+        </createTable>
+
+
+    </changeSet>
+
+</databaseChangeLog>

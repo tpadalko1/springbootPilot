@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
+        <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
     </properties>
 
     <dependencies>
@@ -31,7 +33,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.22</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mattbertolini</groupId>
+            <artifactId>liquibase-slf4j</artifactId>
+            <version>${liquibase-slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -40,16 +61,6 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -57,6 +68,42 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/liquibase/master.xml</changeLogFile>
+                    <diffChangeLogFile>
+                        src/main/resources/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                    </diffChangeLogFile>
+                    <driver>org.h2.Driver</driver>
+                    <url>jdbc:h2:file:./target/h2db/db/demodb</url>
+                    <defaultSchemaName></defaultSchemaName>
+                    <username>user</username>
+                    <password></password>
+                    <referenceUrl>hibernate:spring:com.me.demo.model?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                        <version>${javassist.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate5</artifactId>
+                        <version>${liquibase-hibernate5.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>${project.parent.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
